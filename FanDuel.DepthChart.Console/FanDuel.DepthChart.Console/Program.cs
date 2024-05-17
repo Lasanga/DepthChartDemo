@@ -14,7 +14,7 @@ namespace FanDuel.DepthChart.ConsoleApp
             try
             {
                 var services = new ServiceCollection();
-                services.AddTransient<INflDepthChartManager, NflDepthChartManager>();
+                services.AddScoped<INflDepthChartManager, NflDepthChartManager>();
                 services.AddKeyedSingleton<IRepository, InMemoryRepository>("Local");
                 services.AddKeyedSingleton<IRepository, MongoRepository>("Mongo");
 
