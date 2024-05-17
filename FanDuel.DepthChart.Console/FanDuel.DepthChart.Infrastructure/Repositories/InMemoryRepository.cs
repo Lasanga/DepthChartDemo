@@ -23,7 +23,7 @@ namespace FanDuel.DepthChart.Infrastructure.Repositories
             if (depthChart is null)
             {
                 depthChart = new TeamDepthChart(week);
-                _depthCharts.Add(depthChart
+                _depthCharts.Add(depthChart);
             }
 
             return depthChart;
