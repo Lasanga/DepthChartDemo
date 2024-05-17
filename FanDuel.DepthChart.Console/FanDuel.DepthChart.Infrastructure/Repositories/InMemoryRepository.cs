@@ -22,10 +22,8 @@ namespace FanDuel.DepthChart.Infrastructure.Repositories
             var depthChart = _depthCharts.FirstOrDefault(x => x.Week == week);
             if (depthChart is null)
             {
-                var chart = new TeamDepthChart(week);
-                _depthCharts.Add(chart);
-
-                return chart;
+                depthChart = new TeamDepthChart(week);
+                _depthCharts.Add(depthChart
             }
 
             return depthChart;
