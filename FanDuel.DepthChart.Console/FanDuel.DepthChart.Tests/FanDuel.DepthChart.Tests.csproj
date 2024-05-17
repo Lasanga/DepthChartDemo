@@ -26,8 +26,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\FanDuel.DepthChart.Application\FanDuel.DepthChart.Application\FanDuel.DepthChart.Application.csproj" />
-		<ProjectReference Include="..\..\..\FanDuel.DepthChart.Contracts\FanDuel.DepthChart.Contracts\FanDuel.DepthChart.Contracts.csproj" />
+	  <ProjectReference Include="..\FanDuel.DepthChart.Application\FanDuel.DepthChart.Application.csproj" />
+	  <ProjectReference Include="..\FanDuel.DepthChart.Contracts\FanDuel.DepthChart.Contracts.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\FanDuel.DepthChart.Application\FanDuel.DepthChart.Application\FanDuel.DepthChart.Application.csproj" />
+	  <ProjectReference Include="..\FanDuel.DepthChart.Application\FanDuel.DepthChart.Application.csproj" />
 	</ItemGroup>
 
 </Project>

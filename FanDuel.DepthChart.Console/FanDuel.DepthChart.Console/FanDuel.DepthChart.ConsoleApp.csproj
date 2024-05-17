@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FanDuel.DepthChart.Infrastructure\FanDuel.DepthChart.Infrastructure\FanDuel.DepthChart.Infrastructure.csproj" />
+    <ProjectReference Include="..\FanDuel.DepthChart.Infrastructure\FanDuel.DepthChart.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
