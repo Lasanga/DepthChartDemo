@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FanDuel.DepthChart.ConsoleApp", "FanDuel.DepthChart.Console\FanDuel.DepthChart.ConsoleApp.csproj", "{41B09D18-F5B1-4082-AE02-EEC92A77C3CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanDuel.DepthChart.Application", "FanDuel.DepthChart.Application\FanDuel.DepthChart.Application\FanDuel.DepthChart.Application.csproj", "{E12180EF-6F52-458B-B53C-A54DACBE004B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanDuel.DepthChart.Infrastructure", "FanDuel.DepthChart.Infrastructure\FanDuel.DepthChart.Infrastructure\FanDuel.DepthChart.Infrastructure.csproj", "{1A6BF887-A740-49EB-93E9-88E20558A586}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{570737AA-8E97-47A6-9EC0-23BD1C4A8994}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanDuel.DepthChart.Tests", "FanDuel.DepthChart.Tests\FanDuel.DepthChart.Tests\FanDuel.DepthChart.Tests\FanDuel.DepthChart.Tests.csproj", "{682D2CBC-31EC-4BCD-A7E4-310911B1E6EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanDuel.DepthChart.Domain", "FanDuel.DepthChart.Domain\FanDuel.DepthChart.Domain\FanDuel.DepthChart.Domain.csproj", "{82EA6102-5D8B-4E4F-BF02-BF924998AAA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanDuel.DepthChart.Contracts", "FanDuel.DepthChart.Contracts\FanDuel.DepthChart.Contracts\FanDuel.DepthChart.Contracts.csproj", "{2A5A0932-B552-4C75-8E25-95845194CC14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{41B09D18-F5B1-4082-AE02-EEC92A77C3CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41B09D18-F5B1-4082-AE02-EEC92A77C3CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41B09D18-F5B1-4082-AE02-EEC92A77C3CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41B09D18-F5B1-4082-AE02-EEC92A77C3CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E12180EF-6F52-458B-B53C-A54DACBE004B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E12180EF-6F52-458B-B53C-A54DACBE004B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E12180EF-6F52-458B-B53C-A54DACBE004B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E12180EF-6F52-458B-B53C-A54DACBE004B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A6BF887-A740-49EB-93E9-88E20558A586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6BF887-A740-49EB-93E9-88E20558A586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6BF887-A740-49EB-93E9-88E20558A586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6BF887-A740-49EB-93E9-88E20558A586}.Release|Any CPU.Build.0 = Release|Any CPU
+		{682D2CBC-31EC-4BCD-A7E4-310911B1E6EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{682D2CBC-31EC-4BCD-A7E4-310911B1E6EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{682D2CBC-31EC-4BCD-A7E4-310911B1E6EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{682D2CBC-31EC-4BCD-A7E4-310911B1E6EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82EA6102-5D8B-4E4F-BF02-BF924998AAA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82EA6102-5D8B-4E4F-BF02-BF924998AAA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82EA6102-5D8B-4E4F-BF02-BF924998AAA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82EA6102-5D8B-4E4F-BF02-BF924998AAA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A5A0932-B552-4C75-8E25-95845194CC14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A5A0932-B552-4C75-8E25-95845194CC14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A5A0932-B552-4C75-8E25-95845194CC14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A5A0932-B552-4C75-8E25-95845194CC14}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{682D2CBC-31EC-4BCD-A7E4-310911B1E6EA} = {570737AA-8E97-47A6-9EC0-23BD1C4A8994}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB740B24-B293-4937-A055-6921526AEE7C}
+	EndGlobalSection
+EndGlobal
