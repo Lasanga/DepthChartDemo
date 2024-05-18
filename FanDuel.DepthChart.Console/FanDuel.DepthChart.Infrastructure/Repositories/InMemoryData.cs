@@ -8,7 +8,8 @@ namespace FanDuel.DepthChart.Infrastructure.Repositories
         {
             return
             [
-                new() {
+                new()
+                {
                     Name = "NFL"
                 }
             ];

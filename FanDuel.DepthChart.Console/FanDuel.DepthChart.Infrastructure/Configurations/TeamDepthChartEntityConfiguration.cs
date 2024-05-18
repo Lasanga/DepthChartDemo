@@ -16,12 +16,6 @@ namespace FanDuel.DepthChart.Infrastructure.Configurations
                 .WithMany(x => x.DepthCharts)
                 .HasForeignKey(x => x.TeamId);
 
-            //var options = new JsonSerializerOptions
-            //{
-            //    TypeInfoResolver = SerializationModeOptionsContext.Default,
-            //    MaxDepth = 128
-            //};
-
             var converter = new ValueConverter<Dictionary<string, List<DepthChartEntry>>, string>(
                         v => JsonConvert.SerializeObject(v),
                         v => JsonConvert.DeserializeObject<Dictionary<string, List<DepthChartEntry>>>(v));

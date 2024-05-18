@@ -17,7 +17,7 @@ namespace FanDuel.DepthChart.ConsoleApp
 
                 var sportId = await _nflDepthChartManager.GetSportByNameAsync("NFL");
                 var team1 = await _nflDepthChartManager.CreateTeamAsync(new TeamDto { Name = "Tampa Bay Buccaneers", SportId = sportId }) ?? throw new InvalidOperationException("Team does not exist");
-                
+
                 var tomBrady = await _nflDepthChartManager.CreatePlayerAsync(new PlayerDto { Name = "Tom Brady", Number = 12, TeamId = team1.TeamId });
                 var blaineGabbert = await _nflDepthChartManager.CreatePlayerAsync(new PlayerDto { Name = "Blaine Gabbert", Number = 11, TeamId = team1.TeamId });
                 var kyleTrask = await _nflDepthChartManager.CreatePlayerAsync(new PlayerDto { Name = "Kyle Trask", Number = 2, TeamId = team1.TeamId });
