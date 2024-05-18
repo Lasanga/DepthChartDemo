@@ -228,7 +228,7 @@ namespace FanDuel.DepthChart.Tests
                     Rank = 3
                 },
             };
-            var qbEntries = new List<DepthChartEntry>() { 
+            var qbEntries = new List<DepthChartEntry>() {
                 new DepthChartEntry
                 {
                     Player = MikeEvansEntity,
@@ -401,7 +401,7 @@ namespace FanDuel.DepthChart.Tests
 
             //Act
             var exception = await Record.ExceptionAsync(() => manager.RemovePlayerFromDepthChart(NflPositionTypes.RWR.ToString(), tomBrady));
-            
+
             //Assert
             Assert.NotNull(exception);
         }
