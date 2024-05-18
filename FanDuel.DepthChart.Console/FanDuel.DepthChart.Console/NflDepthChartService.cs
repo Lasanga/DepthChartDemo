@@ -9,47 +9,58 @@ namespace FanDuel.DepthChart.ConsoleApp
         ILogger<NflDepthChartService> _logger,
         INflDepthChartManager _nflDepthChartManager)
     {
-        public void Start()
+        public async Task Start()
         {
-            _logger.LogInformation("Starting Nfl DepthChart Service");
+            try
+            {
+                _logger.LogInformation("Starting Nfl DepthChart Service");
 
-            var tomBrady = new PlayerDto { Name = "Tom Brady", Number = 12 };
-            var blaineGabbert = new PlayerDto { Name = "Blaine Gabbert", Number = 11 };
-            var kyleTrask = new PlayerDto { Name = "Kyle Trask", Number = 2 };
-            var mikeEvans = new PlayerDto { Name = "Mike Evans", Number = 13 };
-            var jaelonDarden = new PlayerDto { Name = "Jaelon Darden", Number = 1 };
-            var scottMiller = new PlayerDto { Name = "Scott Miller", Number = 10 };
+                var sportId = await _nflDepthChartManager.GetSportByNameAsync("NFL");
+                var team1 = await _nflDepthChartManager.CreateTeamAsync(new TeamDto { Name = "Tampa Bay Buccaneers", SportId = sportId }) ?? throw new InvalidOperationException("Team does not exist");
+                
+                var tomBrady = await _nflDepthChartManager.CreatePlayerAsync(new PlayerDto { Name = "Tom Brady", Number = 12, TeamId = team1.TeamId });
+                var blaineGabbert = await _nflDepthChartManager.CreatePlayerAsync(new PlayerDto { Name = "Blaine Gabbert", Number = 11, TeamId = team1.TeamId });
+                var kyleTrask = await _nflDepthChartManager.CreatePlayerAsync(new PlayerDto { Name = "Kyle Trask", Number = 2, TeamId = team1.TeamId });
+                var mikeEvans = await _nflDepthChartManager.CreatePlayerAsync(new PlayerDto { Name = "Mike Evans", Number = 13, TeamId = team1.TeamId });
+                var jaelonDarden = await _nflDepthChartManager.CreatePlayerAsync(new PlayerDto { Name = "Jaelon Darden", Number = 1, TeamId = team1.TeamId });
+                var scottMiller = await _nflDepthChartManager.CreatePlayerAsync(new PlayerDto { Name = "Scott Miller", Number = 10, TeamId = team1.TeamId });
 
-            _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.QB.ToString(), tomBrady, 0);
-            _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.QB.ToString(), blaineGabbert, 1);
-            _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.QB.ToString(), kyleTrask, 2);
+                await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.QB.ToString(), tomBrady, 0);
+                await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.QB.ToString(), blaineGabbert, 1);
+                await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.QB.ToString(), kyleTrask, 2);
 
-            _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.LWR.ToString(), mikeEvans, 0);
-            _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.LWR.ToString(), jaelonDarden, 1);
-            _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.LWR.ToString(), scottMiller, 2);
+                await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.LWR.ToString(), mikeEvans, 0);
+                await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.LWR.ToString(), jaelonDarden, 1);
+                await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.LWR.ToString(), scottMiller, 2);
 
-            _logger.LogInformation("Print Backups");
-            PrintPlayers(() => _nflDepthChartManager.GetBackups(NflPositionTypes.QB.ToString(), tomBrady));
-            PrintPlayers(() => _nflDepthChartManager.GetBackups(NflPositionTypes.LWR.ToString(), jaelonDarden));
-            PrintPlayers(() => _nflDepthChartManager.GetBackups(NflPositionTypes.QB.ToString(), mikeEvans));
-            PrintPlayers(() => _nflDepthChartManager.GetBackups(NflPositionTypes.QB.ToString(), blaineGabbert));
-            PrintPlayers(() => _nflDepthChartManager.GetBackups(NflPositionTypes.QB.ToString(), kyleTrask));
+                Console.WriteLine("Print Backups");
+                await PrintPlayers(async () => await _nflDepthChartManager.GetBackups(NflPositionTypes.QB.ToString(), tomBrady));
+                await PrintPlayers(() => _nflDepthChartManager.GetBackups(NflPositionTypes.LWR.ToString(), jaelonDarden));
+                await PrintPlayers(() => _nflDepthChartManager.GetBackups(NflPositionTypes.QB.ToString(), mikeEvans));
+                await PrintPlayers(() => _nflDepthChartManager.GetBackups(NflPositionTypes.QB.ToString(), blaineGabbert));
+                await PrintPlayers(() => _nflDepthChartManager.GetBackups(NflPositionTypes.QB.ToString(), kyleTrask));
 
-            _logger.LogInformation("Print full DepthChart");
-            PrintFullDepthChart(_nflDepthChartManager.GetFullDepthChart);
+                Console.WriteLine("Print full DepthChart");
+                await PrintFullDepthChart(async () => await _nflDepthChartManager.GetFullDepthChart());
 
-            _logger.LogInformation("Removed Player");
-            PrintPlayers(() => _nflDepthChartManager.RemovePlayerFromDepthChart(NflPositionTypes.LWR.ToString(), mikeEvans));
+                Console.WriteLine("\nRemoved Player");
+                await PrintPlayers(async () => await _nflDepthChartManager.RemovePlayerFromDepthChart(NflPositionTypes.LWR.ToString(), mikeEvans));
 
-            _logger.LogInformation("Print full DepthChart");
-            PrintFullDepthChart(_nflDepthChartManager.GetFullDepthChart);
+                Console.WriteLine("Print full DepthChart");
+                await PrintFullDepthChart(async () => await _nflDepthChartManager.GetFullDepthChart());
 
-            _logger.LogInformation("End of Nfl DepthChart Service");
+                _logger.LogInformation("End of Nfl DepthChart Service");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exception occured while execution: {ex.Message}");
+                throw;
+            }
         }
 
-        private static void PrintPlayers(Func<List<PlayerDto>> action)
+        private async Task PrintPlayers(Func<Task<List<PlayerDto>>> action)
         {
-            var players = action();
+            var players = await action();
             if (!players.Any())
             {
                 Console.WriteLine($"<NO LIST>\n");
@@ -64,9 +75,9 @@ namespace FanDuel.DepthChart.ConsoleApp
             Console.WriteLine();
         }
 
-        private static void PrintFullDepthChart(Func<Dictionary<string, List<DepthChartEntryDto>>> action)
+        private async Task PrintFullDepthChart(Func<Task<Dictionary<string, List<DepthChartEntryDto>>>> action)
         {
-            var depthChart = action();
+            var depthChart = await action();
             foreach (var chart in depthChart)
             {
                 var displayText = $"{chart.Key} - ";

@@ -4,19 +4,19 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FanDuel.DepthChart.Application.MLB
 {
-    public class MlbDepthChartManager([FromKeyedServices("Mongo")] IRepository mongoRepository) : BaseDepthChartManager(mongoRepository), IMlbDepthChartManager
+    public class MlbDepthChartManager([FromKeyedServices("Ef")] IRepository mongoRepository) : BaseDepthChartManager(mongoRepository), IMlbDepthChartManager
     {
-        public override void AddPlayerToDepthChart(string position, PlayerDto player, int? positionDepth = null)
+        public override Task AddPlayerToDepthChart(string position, PlayerDto player, int? positionDepth = null, int? week = null)
         {
             throw new NotImplementedException();
         }
 
-        public override List<PlayerDto> GetBackups(string position, PlayerDto player)
+        public override Task<List<PlayerDto>> GetBackups(string position, PlayerDto player)
         {
             throw new NotImplementedException();
         }
 
-        public override List<PlayerDto> RemovePlayerFromDepthChart(string position, PlayerDto player)
+        public override Task<List<PlayerDto>> RemovePlayerFromDepthChart(string position, PlayerDto player)
         {
             throw new NotImplementedException();
         }

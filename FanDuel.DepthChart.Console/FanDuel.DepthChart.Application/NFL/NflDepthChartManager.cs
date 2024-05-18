@@ -1,5 +1,4 @@
-﻿using FanDuel.DepthChart.Application.Extensions;
-using FanDuel.DepthChart.Application.Interfaces.Repositories;
+﻿using FanDuel.DepthChart.Application.Interfaces.Repositories;
 using FanDuel.DepthChart.Contracts;
 using FanDuel.DepthChart.Domain.Entities;
 using FanDuel.DepthChart.Domain.Types;
@@ -7,17 +6,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FanDuel.DepthChart.Application.NFL
 {
-    public class NflDepthChartManager([FromKeyedServices("Local")] IRepository localRepository) : BaseDepthChartManager(localRepository), INflDepthChartManager
+    public class NflDepthChartManager([FromKeyedServices("Ef")] IRepository localRepository) : BaseDepthChartManager(localRepository), INflDepthChartManager
     {
-        /// <inheritdoc />
-        public override void AddPlayerToDepthChart(string position, PlayerDto player, int? positionDepth = null)
+        public override async Task AddPlayerToDepthChart(string position, PlayerDto playerDto, int? positionDepth = null, int? week = null)
         {
             ValidatePosition(position);
-            var depthChart = _repository.GetTeamDepthChart(1);
+
+            var player = await GetPlayerAsync(playerDto);
+            var depthChart = await _repository.GetTeamDepthChartAsync(week ?? 1);
 
             if (!depthChart.Entries.TryGetValue(position, out _))
             {
-                depthChart.Entries[position] = new List<DepthChartEntry>();
+                depthChart.Entries[position] = [];
             }
 
             if (depthChart.Entries[position].Any(x => x.Player.Number == player.Number))
@@ -32,10 +32,8 @@ namespace FanDuel.DepthChart.Application.NFL
                 {
                     Rank = depthChart.Entries[position].Count,
                     Position = position,
-                    Player = player.MapToPlayer()
+                    Player = player
                 });
-
-                return;
             }
             else
             {
@@ -43,7 +41,7 @@ namespace FanDuel.DepthChart.Application.NFL
                 {
                     Rank = positionDepth.GetValueOrDefault(),
                     Position = position,
-                    Player = player.MapToPlayer()
+                    Player = player
                 });
 
                 for (int i = index + 1; i < depthChart.Entries[position].Count; i++)
@@ -52,16 +50,16 @@ namespace FanDuel.DepthChart.Application.NFL
                 }
             }
 
-            depthChart.Entries[position] = depthChart.Entries[position].OrderBy(x => x.Rank).ToList();
+            depthChart.Entries[position] = [.. depthChart.Entries[position].OrderBy(x => x.Rank)];
+            await _repository.UpdateTeamDepthChartAsync(depthChart);
         }
 
-        /// <inheritdoc />
-        public override List<PlayerDto> GetBackups(string position, PlayerDto player)
+        public override async Task<List<PlayerDto>> GetBackups(string position, PlayerDto player)
         {
             ValidatePosition(position);
-            var depthChart = _repository.GetTeamDepthChart(1);
+            var depthChart = await _repository.GetTeamDepthChartAsync(1);
 
-            if (!depthChart.Entries.TryGetValue(position, out List<DepthChartEntry> entries))
+            if (!depthChart.Entries.TryGetValue(position, out var entries))
             {
                 throw new InvalidDataException("Depth chart for the requested position was not found");
             }
@@ -79,13 +77,12 @@ namespace FanDuel.DepthChart.Application.NFL
             }).ToList();
         }
 
-        /// <inheritdoc />
-        public override List<PlayerDto> RemovePlayerFromDepthChart(string position, PlayerDto player)
+        public override async Task<List<PlayerDto>> RemovePlayerFromDepthChart(string position, PlayerDto player)
         {
             ValidatePosition(position);
-            var depthChart = _repository.GetTeamDepthChart(1);
+            var depthChart = await _repository.GetTeamDepthChartAsync(1);
 
-            if (!depthChart.Entries.TryGetValue(position, out List<DepthChartEntry> entries))
+            if (!depthChart.Entries.TryGetValue(position, out var entries))
             {
                 throw new InvalidDataException("Depth chart for the requested position was not found");
             }
@@ -105,6 +102,7 @@ namespace FanDuel.DepthChart.Application.NFL
             return [];
         }
 
+        #region Private methods
         private static void ValidatePosition(string position)
         {
             var validNflPositions = Enum.GetValues(typeof(NflPositionTypes))
@@ -117,5 +115,12 @@ namespace FanDuel.DepthChart.Application.NFL
                 throw new InvalidOperationException("Invalid NFL position");
             }
         }
+
+        private async Task<Player?> GetPlayerAsync(PlayerDto playerDto)
+        {
+            var player = await _repository.GetPlayerByTeamNumberAsync(playerDto.TeamId, playerDto.Number);
+            return player is null ? throw new InvalidOperationException($"Player number => {playerDto.Number} could not be found") : player;
+        }
+        #endregion
     }
 }
