@@ -1,6 +1,8 @@
 ﻿using FanDuel.DepthChart.Application.Interfaces.Repositories;
 using FanDuel.DepthChart.Application.NFL;
+using FanDuel.DepthChart.Infrastructure.Persistence;
 using FanDuel.DepthChart.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -8,10 +10,10 @@ namespace FanDuel.DepthChart.ConsoleApp
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var app = CreateHostBuilder(args).Build();
-            app.Services.GetRequiredService<NflDepthChartService>().Start();
+            await app.Services.GetRequiredService<NflDepthChartService>().Start();
         }
 
         static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -21,7 +23,8 @@ namespace FanDuel.DepthChart.ConsoleApp
                     services.AddSingleton<NflDepthChartService>();
                     services.AddScoped<INflDepthChartManager, NflDepthChartManager>();
                     services.AddKeyedSingleton<IRepository, InMemoryRepository>("Local");
-                    services.AddKeyedSingleton<IRepository, MongoRepository>("Mongo");
+                    services.AddKeyedScoped<IRepository, EfInMemoryRepository>("Ef");
+                    services.AddDbContext<DepthChartDbContext>(options => options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
                 });
     }
 }
