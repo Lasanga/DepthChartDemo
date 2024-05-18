@@ -14,9 +14,9 @@ namespace FanDuel.DepthChart.Infrastructure.Repositories
 
         public TeamDepthChart GetTeamDepthChart(int week)
         {
-            if (week < 1 || week > 32)
+            if (week < 1)
             {
-                throw new InvalidOperationException("Week must be in range of 1 - 32");
+                throw new InvalidOperationException("Week is invalid");
             }
 
             var depthChart = _depthCharts.FirstOrDefault(x => x.Week == week);
