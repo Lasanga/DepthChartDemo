@@ -30,7 +30,7 @@ namespace FanDuel.DepthChart.Application.NFL
             {
                 depthChart.Entries[position].Add(new DepthChartEntry
                 {
-                    Rank = depthChart.Entries[position].Count,
+                    Rank = positionDepth.GetValueOrDefault(),
                     Position = position,
                     Player = player
                 });

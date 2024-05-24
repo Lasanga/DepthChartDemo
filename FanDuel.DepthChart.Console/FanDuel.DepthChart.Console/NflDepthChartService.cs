@@ -29,6 +29,11 @@ namespace FanDuel.DepthChart.ConsoleApp
                 await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.QB.ToString(), blaineGabbert, 1);
                 await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.QB.ToString(), kyleTrask, 2);
 
+                await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.C.ToString(), tomBrady, 2);
+                await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.C.ToString(), blaineGabbert, 1);
+                await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.C.ToString(), kyleTrask, 0);
+                await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.C.ToString(), scottMiller, 1);
+
                 await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.LWR.ToString(), mikeEvans, 0);
                 await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.LWR.ToString(), jaelonDarden, 1);
                 await _nflDepthChartManager.AddPlayerToDepthChart(NflPositionTypes.LWR.ToString(), scottMiller, 2);
