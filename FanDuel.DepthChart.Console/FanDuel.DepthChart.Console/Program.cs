@@ -18,13 +18,13 @@ namespace FanDuel.DepthChart.ConsoleApp
 
         static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureServices((_, services) =>
-                {
-                    services.AddSingleton<NflDepthChartService>();
-                    services.AddScoped<INflDepthChartManager, NflDepthChartManager>();
-                    services.AddKeyedSingleton<IRepository, InMemoryRepository>("Local");
-                    services.AddKeyedScoped<IRepository, EfInMemoryRepository>("Ef");
-                    services.AddDbContext<DepthChartDbContext>(options => options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
-                });
+            .ConfigureServices((_, services) =>
+            {
+                services.AddSingleton<NflDepthChartService>();
+                services.AddScoped<INflDepthChartManager, NflDepthChartManager>();
+                services.AddKeyedSingleton<IRepository, InMemoryRepository>("Local");
+                services.AddKeyedScoped<IRepository, EfInMemoryRepository>("Ef");
+                services.AddDbContext<DepthChartDbContext>(options => options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
+            });
     }
 }
