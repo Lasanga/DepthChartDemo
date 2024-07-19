@@ -49,4 +49,15 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"Lasanga_DepthChartDemo" /o:"depthchart" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverage.exclusions="**/Fanduel.DepthChart.Console/**"
           dotnet build FanDuel.DepthChart.Console
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          # .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          # Run tests and collect coverage
+          dotnet test FanDuel.DepthChart.Console --collect:"XPlat Code Coverage" --results-directory ./TestResults
+          # End SonarCloud analysis
+          $coverageFile = Get-ChildItem -Path ./TestResults -Filter "coverage.opencover.xml" -Recurse | Select-Object -First 1
+          if ($coverageFile) {
+            .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths=$coverageFile.FullName
+          } else {
+            Write-Error "Coverage file not found."
+            # If coverage file is not found, still end the analysis
+            .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          }
