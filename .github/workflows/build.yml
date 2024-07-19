@@ -47,13 +47,23 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          # .\.sonar\scanner\dotnet-sonarscanner begin /k:"Lasanga_DepthChartDemo" /o:"depthchart" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=coverage.xml /d:sonar.coverage.exclusions="Fanduel.DepthChart.Console/*"
-          # dotnet build FanDuel.DepthChart.Console --no-incremental
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Lasanga_DepthChartDemo" /o:"depthchart" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=coverage.xml /d:sonar.coverage.exclusions="Fanduel.DepthChart.Console/*"
+          dotnet build FanDuel.DepthChart.Console --no-incremental
           # .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
-          dotnet sonarscanner begin /k:"Lasanga_DepthChartDemo" /d:sonar.token="${{secrets.SONAR_TOKEN }}" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
-          dotnet build --no-incremental
-          dotnet tool install --global dotnet-coverage
-          dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
-          dotnet sonarscanner end /d:sonar.token=${{ secrets.SONAR_TOKEN }}
+          # Run tests and collect coverage with Coverlet
+          dotnet test FanDuel.DepthChart.Console --collect:"XPlat Code Coverage" --results-directory ./TestResults
+
+          # Convert coverage reports to OpenCover format
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          dotnet reportgenerator -reports:./TestResults/**/*.xml -targetdir:./coverage-report -reporttypes:opencover
+
+          # End SonarCloud analysis
+          $coverageFile = Get-ChildItem -Path ./coverage-report -Filter "coverage.opencover.xml" -Recurse | Select-Object -First 1
+          if ($coverageFile) {
+            .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths=$coverageFile.FullName
+          } else {
+            Write-Error "Coverage file not found."
+            .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          }
 
