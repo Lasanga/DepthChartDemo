@@ -54,9 +54,17 @@ jobs:
           # Run tests and collect coverage with Coverlet
           dotnet test FanDuel.DepthChart.Console --collect:"XPlat Code Coverage" --results-directory ./TestResults
 
-          # Convert coverage reports to OpenCover format
+          # Install ReportGenerator tool
           dotnet tool install -g dotnet-reportgenerator-globaltool
-          dotnet reportgenerator -reports:./TestResults/**/*.xml -targetdir:./coverage-report -reporttypes:opencover
+          
+          # Add the .dotnet/tools folder to the PATH
+          $env:PATH += ";$env:USERPROFILE/.dotnet/tools"
+
+          # Verify installation
+          dotnet tool list -g
+
+          # Convert coverage reports to OpenCover format
+          reportgenerator -reports:./TestResults/**/*.xml -targetdir:./coverage-report -reporttypes:opencover
 
           # End SonarCloud analysis
           $coverageFile = Get-ChildItem -Path ./coverage-report -Filter "coverage.opencover.xml" -Recurse | Select-Object -First 1
