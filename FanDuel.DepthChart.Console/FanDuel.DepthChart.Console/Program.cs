@@ -26,5 +26,6 @@ namespace FanDuel.DepthChart.ConsoleApp
                 services.AddKeyedScoped<IRepository, EfInMemoryRepository>("Ef");
                 services.AddDbContext<DepthChartDbContext>(options => options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
             });
+        
     }
 }
